@@ -1518,6 +1518,203 @@
   }
 
 
+
+  /* ── USER AUTH ── */
+  .user-bar {
+    background: rgba(0,212,255,0.06);
+    border: 1px solid rgba(0,212,255,0.15);
+    border-radius: var(--radius);
+    padding: 0.8rem 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+  .user-bar-info {
+    display: flex; align-items: center; gap: 0.7rem;
+  }
+  .user-avatar {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--gradient-neon);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.75rem; font-weight: 900;
+    color: white; flex-shrink: 0;
+  }
+  .user-name-label {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.75rem; font-weight: 700;
+    color: var(--neon-blue);
+  }
+  .user-wa-label {
+    font-size: 0.8rem; color: var(--text-muted);
+  }
+  .btn-logout-user {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.6rem; letter-spacing: 1.5px;
+    text-transform: uppercase;
+    background: rgba(255,23,68,0.1);
+    color: var(--saber-red);
+    border: 1px solid rgba(255,23,68,0.25);
+    padding: 6px 14px; border-radius: 20px;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .btn-logout-user:hover { background: rgba(255,23,68,0.2); }
+
+  .auth-tabs {
+    display: flex; gap: 0; margin-bottom: 1.5rem;
+    border: 1px solid rgba(0,212,255,0.2);
+    border-radius: 8px; overflow: hidden;
+  }
+  .auth-tab-btn {
+    flex: 1;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.65rem; letter-spacing: 1.5px; text-transform: uppercase;
+    background: transparent; color: var(--text-muted);
+    border: none; padding: 10px; cursor: pointer; transition: all 0.2s;
+  }
+  .auth-tab-btn.active {
+    background: rgba(0,212,255,0.12); color: var(--neon-blue);
+  }
+  .auth-form { display: none; }
+  .auth-form.active { display: block; }
+
+  /* ── PDF COTIZACION MODAL ── */
+  .pdf-preview-modal {
+    display: none;
+    position: fixed; top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.88);
+    z-index: 4000;
+    align-items: center; justify-content: center;
+    backdrop-filter: blur(8px);
+  }
+  .pdf-preview-modal.open { display: flex; }
+  .pdf-preview-box {
+    background: var(--space-mid);
+    border: 1px solid rgba(0,212,255,0.3);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    max-width: 520px; width: 92%;
+    position: relative;
+    box-shadow: 0 0 80px rgba(0,212,255,0.12);
+    animation: modal-in 0.3s ease;
+    max-height: 90vh; overflow-y: auto;
+  }
+  .pdf-preview-box::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--gradient-gold);
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  }
+  /* cotización visual dentro del modal */
+  .cotizacion-doc {
+    background: white; border-radius: 10px;
+    padding: 1.8rem; margin: 1.2rem 0;
+    color: #111; font-family: 'Rajdhani', sans-serif;
+  }
+  .cot-doc-header {
+    display: flex; align-items: center; gap: 1rem;
+    border-bottom: 2px solid #1a0a3a; padding-bottom: 1rem; margin-bottom: 1.2rem;
+  }
+  .cot-doc-logo {
+    width: 64px; height: 64px; border-radius: 50%;
+    object-fit: cover; flex-shrink: 0;
+  }
+  .cot-doc-brand { flex: 1; }
+  .cot-doc-brand-name {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 1.1rem; font-weight: 900; color: #1a0a3a;
+  }
+  .cot-doc-brand-sub {
+    font-size: 0.75rem; color: #7c3aed; letter-spacing: 2px;
+    font-family: 'Orbitron', monospace;
+  }
+  .cot-doc-num {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.65rem; color: #888; text-align: right;
+  }
+  .cot-section-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase;
+    color: #7c3aed; margin-bottom: 0.5rem; margin-top: 1rem;
+  }
+  .cot-client-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 0.4rem; margin-bottom: 1rem;
+  }
+  .cot-client-item { font-size: 0.85rem; }
+  .cot-client-label { font-weight: 700; color: #333; }
+  .cot-client-val { color: #555; }
+  .cot-table { width: 100%; border-collapse: collapse; margin: 0.5rem 0; }
+  .cot-table th {
+    background: #1a0a3a; color: white;
+    font-family: 'Orbitron', monospace; font-size: 0.6rem;
+    letter-spacing: 1px; padding: 8px 10px; text-align: left;
+  }
+  .cot-table td {
+    padding: 7px 10px; font-size: 0.85rem;
+    border-bottom: 1px solid #eee;
+  }
+  .cot-table tr:nth-child(even) td { background: #f8f4ff; }
+  .cot-total-row td {
+    font-family: 'Orbitron', monospace;
+    font-weight: 900; font-size: 1rem;
+    border-top: 2px solid #1a0a3a;
+    color: #7c3aed; border-bottom: none;
+  }
+  .cot-footer {
+    margin-top: 1.2rem; padding-top: 0.8rem;
+    border-top: 1px solid #ddd;
+    font-size: 0.75rem; color: #888;
+    text-align: center;
+  }
+  .cot-validity {
+    background: #f0ebff; border-radius: 6px;
+    padding: 6px 12px; font-size: 0.78rem;
+    color: #7c3aed; text-align: center; margin-top: 0.8rem;
+  }
+
+  /* btn pdf */
+  .btn-pdf {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.7rem; letter-spacing: 1.5px; text-transform: uppercase;
+    background: var(--gradient-gold);
+    color: #1a0a3a; border: none;
+    padding: 11px 24px; border-radius: 25px;
+    cursor: pointer; font-weight: 900;
+    transition: all 0.3s;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .btn-pdf:hover { box-shadow: 0 0 30px rgba(255,215,0,0.4); transform: scale(1.04); }
+  .btn-wa-cot {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.7rem; letter-spacing: 1.5px; text-transform: uppercase;
+    background: #25D366; color: white; border: none;
+    padding: 11px 24px; border-radius: 25px;
+    cursor: pointer; font-weight: 900;
+    transition: all 0.3s;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .btn-wa-cot:hover { box-shadow: 0 0 30px rgba(37,211,102,0.4); transform: scale(1.04); }
+
+  /* cotizador user hint */
+  .cot-user-hint {
+    background: rgba(0,212,255,0.05);
+    border: 1px solid rgba(0,212,255,0.15);
+    border-radius: 8px; padding: 0.8rem 1rem;
+    font-size: 0.82rem; color: var(--text-muted);
+    margin-bottom: 1rem; text-align: center;
+  }
+  .cot-user-hint a {
+    color: var(--neon-blue); cursor: pointer;
+    font-family: 'Orbitron', monospace; font-size: 0.7rem;
+  }
+
 </style>
 </head>
 <body>
@@ -1609,8 +1806,12 @@
       <p class="total-label">Total Estimado</p>
       <p class="total-amount" id="totalAmount">$0 MXN</p>
     </div>
-    <div style="text-align:center">
+    <p class="cot-user-hint" id="cotUserHint">
+      💡 <a onclick="document.getElementById('citas').scrollIntoView({behavior:'smooth'})">Inicia sesión</a> para incluir tus datos en la cotización PDF
+    </p>
+    <div style="text-align:center;display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap">
       <button class="btn-primary" onclick="irACitaConCotizacion()">⚡ Agendar con esta Cotización</button>
+      <button class="btn-pdf" onclick="abrirPDFCotizacion()">📄 Ver / Descargar PDF</button>
     </div>
   </div>
 </section>
@@ -1622,16 +1823,62 @@
     <h2 class="section-title">Agendar Cita</h2>
     <div class="section-line"></div>
   </div>
-  <div class="cita-form-wrapper">
+
+  <!-- AUTH BLOCK -->
+  <div style="max-width:480px;margin:0 auto 2rem;" id="authBlock">
+    <div class="cita-form-wrapper" style="padding:1.8rem">
+      <div class="auth-tabs">
+        <button class="auth-tab-btn active" id="tabLoginBtn" onclick="switchAuthTab('login')">Iniciar Sesión</button>
+        <button class="auth-tab-btn" id="tabRegBtn" onclick="switchAuthTab('register')">Registrarme</button>
+      </div>
+      <!-- LOGIN FORM -->
+      <div class="auth-form active" id="authLoginForm">
+        <div class="form-group mb-2" style="margin-bottom:1rem">
+          <label class="form-label">Tu WhatsApp</label>
+          <input class="form-input" id="loginWA" type="tel" placeholder="Ej: 8132470050">
+        </div>
+        <div class="form-group" style="margin-bottom:1.2rem">
+          <label class="form-label">Contraseña</label>
+          <input class="form-input" id="loginPass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')loginUsuario()">
+        </div>
+        <button class="btn-primary" style="width:100%;justify-content:center" onclick="loginUsuario()">⚡ Entrar</button>
+      </div>
+      <!-- REGISTER FORM -->
+      <div class="auth-form" id="authRegForm">
+        <div class="form-group" style="margin-bottom:0.9rem">
+          <label class="form-label">Nombre Completo</label>
+          <input class="form-input" id="regNombre" type="text" placeholder="Tu nombre">
+        </div>
+        <div class="form-group" style="margin-bottom:0.9rem">
+          <label class="form-label">WhatsApp (será tu usuario)</label>
+          <input class="form-input" id="regWA" type="tel" placeholder="10 dígitos">
+        </div>
+        <div class="form-group" style="margin-bottom:1.2rem">
+          <label class="form-label">Contraseña</label>
+          <input class="form-input" id="regPass" type="password" placeholder="Mínimo 6 caracteres" onkeydown="if(event.key==='Enter')registrarUsuario()">
+        </div>
+        <button class="btn-primary" style="width:100%;justify-content:center" onclick="registrarUsuario()">🌟 Crear Cuenta</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOGGED USER BAR (shown when logged in) -->
+  <div style="max-width:700px;margin:0 auto 1.5rem;display:none" id="userBar">
+    <div class="user-bar">
+      <div class="user-bar-info">
+        <div class="user-avatar" id="userAvatarLetter">U</div>
+        <div>
+          <p class="user-name-label" id="userNameDisplay">Usuario</p>
+          <p class="user-wa-label" id="userWADisplay">WhatsApp</p>
+        </div>
+      </div>
+      <button class="btn-logout-user" onclick="logoutUsuario()">✕ Cerrar Sesión</button>
+    </div>
+  </div>
+
+  <!-- CITA FORM (shown when logged in) -->
+  <div class="cita-form-wrapper" id="citaFormBlock" style="display:none">
     <div class="form-grid">
-      <div class="form-group">
-        <label class="form-label">Tu Nombre</label>
-        <input class="form-input" id="citaNombre" type="text" placeholder="Nombre completo">
-      </div>
-      <div class="form-group">
-        <label class="form-label">WhatsApp</label>
-        <input class="form-input" id="citaWA" type="tel" placeholder="8132470050">
-      </div>
       <div class="form-group">
         <label class="form-label">Fecha</label>
         <input class="form-input" id="citaFecha" type="date">
@@ -1654,14 +1901,10 @@
     </div>
   </div>
 
-  <!-- Mis Citas (usuario) -->
-  <div style="max-width:700px;margin:3rem auto 0;">
+  <!-- Mis Citas (usuario logueado) -->
+  <div style="max-width:700px;margin:3rem auto 0;display:none" id="misCitasBlock">
     <div class="section-header">
-      <p class="section-eyebrow" style="font-size:0.6rem;">✦ Buscar mi cita ✦</p>
-    </div>
-    <div style="display:flex;gap:0.8rem;margin-bottom:1.5rem;flex-wrap:wrap;justify-content:center">
-      <input class="form-input" id="buscarWA" type="tel" placeholder="Ingresa tu WhatsApp" style="max-width:260px">
-      <button class="btn-secondary" onclick="buscarMisCitas()">🔍 Buscar mis citas</button>
+      <p class="section-eyebrow" style="font-size:0.6rem;">✦ Mis Citas ✦</p>
     </div>
     <div id="misCitasResult"></div>
   </div>
@@ -1720,6 +1963,21 @@
   <small style="opacity:0.5;font-size:0.7rem;">Diseñado con amor desde la galaxia ✨</small></p>
 </footer>
 
+<!-- PDF COTIZACION MODAL -->
+<div class="pdf-preview-modal" id="pdfModal">
+  <div class="pdf-preview-box">
+    <button class="modal-close" onclick="cerrarPDFModal()">✕</button>
+    <h2 style="font-family:'Orbitron',monospace;font-size:0.9rem;letter-spacing:2px;color:var(--gold);margin-bottom:0.5rem">📄 COTIZACIÓN</h2>
+    <p style="font-size:0.8rem;color:var(--text-muted);margin-bottom:1rem">Visualiza e imprime o guarda como PDF</p>
+    <div id="cotizacionDocHTML"></div>
+    <div style="display:flex;gap:0.8rem;justify-content:center;flex-wrap:wrap;margin-top:1.2rem">
+      <button class="btn-pdf" onclick="imprimirCotizacion()">🖨 Imprimir / Guardar PDF</button>
+      <button class="btn-wa-cot" onclick="enviarCotizacionWA()">💬 Enviar por WhatsApp</button>
+      <button class="btn-secondary" onclick="cerrarPDFModal()" style="padding:11px 20px">Cerrar</button>
+    </div>
+  </div>
+</div>
+
 <!-- WHATSAPP FLOAT -->
 <a class="whatsapp-float" id="waFloat" href="#" target="_blank">
   <span class="whatsapp-tooltip">💬 Escríbenos por WhatsApp</span>
@@ -1762,6 +2020,7 @@
       <button class="admin-tab" onclick="switchAdminTab('servicios')">✨ Servicios</button>
       <button class="admin-tab" onclick="switchAdminTab('portafolio')">🖼 Portafolio</button>
       <button class="admin-tab" onclick="switchAdminTab('negocio')">🏪 Negocio</button>
+      <button class="admin-tab" onclick="switchAdminTab('usuarios')">👥 Usuarios</button>
       <button class="admin-tab" onclick="switchAdminTab('cuenta')">🔐 Cuenta</button>
     </div>
 
@@ -1846,6 +2105,18 @@
         <div style="margin-top:1.5rem">
           <button class="btn-primary" onclick="saveNegocioAdmin()">💾 Guardar Datos</button>
         </div>
+      </div>
+    </div>
+
+    <!-- USUARIOS ADMIN -->
+    <div class="admin-section" id="tab-usuarios">
+      <div class="admin-card">
+        <h3>👥 Usuarios Registrados</h3>
+        <div style="display:flex;gap:0.8rem;flex-wrap:wrap;margin-bottom:1.2rem;align-items:center">
+          <input class="form-input" id="filterUsuarioSearch" type="text" placeholder="Buscar por nombre o WhatsApp" style="max-width:300px" oninput="renderAdminUsuarios()">
+          <button class="btn-delete btn-sm" onclick="clearAllUsuarios()">🗑 Limpiar todos</button>
+        </div>
+        <div id="adminUsuariosList"></div>
       </div>
     </div>
 
@@ -1979,6 +2250,311 @@ const DEFAULT_SERVICIOS = [
 ];
 
 const DEFAULT_ADMIN = { user: 'admin', pass: 'admin123' };
+
+
+// ============================================================
+// USUARIOS — AUTH
+// ============================================================
+const USUARIOS_KEY = 'ssn_usuarios';
+const SESION_KEY   = 'ssn_sesion_usuario';
+
+function getUsuarios() { return getData(USUARIOS_KEY) || {}; }
+function saveUsuarios(u) { saveData(USUARIOS_KEY, u); }
+function getUsuarioSesion() {
+  try { return JSON.parse(sessionStorage.getItem(SESION_KEY)); } catch { return null; }
+}
+function setUsuarioSesion(u) { sessionStorage.setItem(SESION_KEY, JSON.stringify(u)); }
+function clearUsuarioSesion() { sessionStorage.removeItem(SESION_KEY); }
+
+function switchAuthTab(tab) {
+  document.getElementById('authLoginForm').classList.toggle('active', tab === 'login');
+  document.getElementById('authRegForm').classList.toggle('active', tab === 'register');
+  document.getElementById('tabLoginBtn').classList.toggle('active', tab === 'login');
+  document.getElementById('tabRegBtn').classList.toggle('active', tab === 'register');
+}
+
+function registrarUsuario() {
+  const nombre = document.getElementById('regNombre').value.trim();
+  const wa     = document.getElementById('regWA').value.trim().replace(/\s/g,'');
+  const pass   = document.getElementById('regPass').value;
+
+  if (!nombre || !wa || !pass) { notify('Completa todos los campos', 'error'); return; }
+  if (!/^\d{10}$/.test(wa))   { notify('WhatsApp debe tener 10 dígitos', 'error'); return; }
+  if (pass.length < 6)         { notify('Contraseña mínimo 6 caracteres', 'error'); return; }
+
+  const usuarios = getUsuarios();
+  if (usuarios[wa]) { notify('Ese WhatsApp ya tiene una cuenta. Inicia sesión.', 'error'); return; }
+
+  usuarios[wa] = { nombre, whatsapp: wa, pass, fechaReg: new Date().toISOString() };
+  saveUsuarios(usuarios);
+  setUsuarioSesion({ nombre, whatsapp: wa });
+  notify(`¡Bienvenida ${nombre}! 🌟 Cuenta creada`, 'success');
+  actualizarUIUsuario();
+}
+
+function loginUsuario() {
+  const wa   = document.getElementById('loginWA').value.trim().replace(/\s/g,'');
+  const pass = document.getElementById('loginPass').value;
+
+  if (!wa || !pass) { notify('Ingresa WhatsApp y contraseña', 'error'); return; }
+
+  const usuarios = getUsuarios();
+  const u = usuarios[wa];
+  if (!u || u.pass !== pass) { notify('WhatsApp o contraseña incorrectos', 'error'); return; }
+
+  setUsuarioSesion({ nombre: u.nombre, whatsapp: u.whatsapp });
+  notify(`¡Bienvenida de vuelta, ${u.nombre}! ✨`, 'success');
+  actualizarUIUsuario();
+}
+
+function logoutUsuario() {
+  clearUsuarioSesion();
+  actualizarUIUsuario();
+  notify('Sesión cerrada', 'info');
+}
+
+function actualizarUIUsuario() {
+  const usuario = getUsuarioSesion();
+  const authBlock   = document.getElementById('authBlock');
+  const userBar     = document.getElementById('userBar');
+  const citaForm    = document.getElementById('citaFormBlock');
+  const misCitasB   = document.getElementById('misCitasBlock');
+
+  if (usuario) {
+    if (authBlock)  authBlock.style.display  = 'none';
+    if (userBar)    userBar.style.display    = 'block';
+    if (citaForm)   citaForm.style.display   = 'block';
+    if (misCitasB)  misCitasB.style.display  = 'block';
+
+    document.getElementById('userNameDisplay').textContent = usuario.nombre;
+    document.getElementById('userWADisplay').textContent   = '📱 ' + usuario.whatsapp;
+    document.getElementById('userAvatarLetter').textContent = usuario.nombre[0].toUpperCase();
+
+    // Update cotizador hint
+    const hint = document.getElementById('cotUserHint');
+    if (hint) hint.innerHTML = `✦ Sesión activa como <strong style="color:var(--neon-blue)">${usuario.nombre}</strong> — el PDF incluirá tus datos`;
+
+    renderMisCitas();
+  } else {
+    if (authBlock)  authBlock.style.display  = 'block';
+    if (userBar)    userBar.style.display    = 'none';
+    if (citaForm)   citaForm.style.display   = 'none';
+    if (misCitasB)  misCitasB.style.display  = 'none';
+
+    const hint = document.getElementById('cotUserHint');
+    if (hint) hint.innerHTML = `💡 <a onclick="document.getElementById('citas').scrollIntoView({behavior:'smooth'})">Inicia sesión</a> para incluir tus datos en la cotización PDF`;
+  }
+}
+
+// ============================================================
+// PDF COTIZACIÓN
+// ============================================================
+function buildCotizacionHTML(conUsuario) {
+  if (cotizacionSeleccionada.length === 0) return null;
+  const negocio  = getNegocio();
+  const usuario  = getUsuarioSesion();
+  const logoSrc  = document.getElementById('heroLogo')?.src || '';
+  const folio    = 'COT-' + Date.now().toString().slice(-6);
+  const fecha    = new Date().toLocaleDateString('es-MX', { year:'numeric', month:'long', day:'numeric' });
+  const subtotal = cotizacionSeleccionada.reduce((a,s) => a+s.precio, 0);
+
+  const clienteHtml = conUsuario && usuario ? `
+    <p class="cot-section-title">Datos del Cliente</p>
+    <div class="cot-client-grid">
+      <div class="cot-client-item"><span class="cot-client-label">Nombre: </span><span class="cot-client-val">${usuario.nombre}</span></div>
+      <div class="cot-client-item"><span class="cot-client-label">WhatsApp: </span><span class="cot-client-val">${usuario.whatsapp}</span></div>
+    </div>
+  ` : '';
+
+  return `
+    <div class="cotizacion-doc" id="cotizacionPrintArea">
+      <div class="cot-doc-header">
+        ${logoSrc ? `<img class="cot-doc-logo" src="${logoSrc}" alt="logo">` : ''}
+        <div class="cot-doc-brand">
+          <p class="cot-doc-brand-name">Star Shine Nails</p>
+          <p class="cot-doc-brand-sub">✦ Belleza Galáctica ✦</p>
+          <p style="font-size:0.75rem;color:#666;margin-top:2px">${negocio.telefono} · ${negocio.direccion}</p>
+        </div>
+        <div class="cot-doc-num">
+          <p style="font-weight:900;color:#1a0a3a">${folio}</p>
+          <p>${fecha}</p>
+        </div>
+      </div>
+
+      ${clienteHtml}
+
+      <p class="cot-section-title">Servicios Cotizados</p>
+      <table class="cot-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Servicio</th>
+            <th style="text-align:right">Precio</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${cotizacionSeleccionada.map((s,i) => `
+            <tr>
+              <td>${i+1}</td>
+              <td>${s.nombre}</td>
+              <td style="text-align:right;font-family:'Orbitron',monospace;font-weight:700">$${s.precio.toLocaleString()}</td>
+            </tr>
+          `).join('')}
+          <tr class="cot-total-row">
+            <td colspan="2" style="font-size:0.9rem">TOTAL ESTIMADO</td>
+            <td style="text-align:right">$${subtotal.toLocaleString()} MXN</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="cot-validity">
+        ⏳ Esta cotización tiene validez de <strong>7 días</strong> a partir de hoy
+      </div>
+
+      <div class="cot-footer">
+        <strong>Star Shine Nails</strong> · ${negocio.horario}<br>
+        WhatsApp: ${negocio.telefono}<br>
+        <em style="color:#bbb">Gracias por confiar en nosotras ✨</em>
+      </div>
+    </div>
+  `;
+}
+
+function abrirPDFCotizacion() {
+  if (cotizacionSeleccionada.length === 0) {
+    notify('Selecciona al menos un servicio para generar la cotización', 'error');
+    return;
+  }
+  const usuario = getUsuarioSesion();
+  const docHTML = buildCotizacionHTML(!!usuario);
+  document.getElementById('cotizacionDocHTML').innerHTML = docHTML;
+  document.getElementById('pdfModal').classList.add('open');
+}
+
+function cerrarPDFModal() {
+  document.getElementById('pdfModal').classList.remove('open');
+}
+
+function imprimirCotizacion() {
+  const printArea = document.getElementById('cotizacionPrintArea');
+  if (!printArea) return;
+  const logoSrc  = document.getElementById('heroLogo')?.src || '';
+  const negocio  = getNegocio();
+  const win = window.open('', '_blank', 'width=680,height=860');
+  win.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8">
+    <title>Cotización - Star Shine Nails</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+      * { margin:0; padding:0; box-sizing:border-box; }
+      body { font-family: 'Rajdhani', sans-serif; background: white; padding: 30px; color: #111; }
+      .cot-doc-header { display:flex; align-items:center; gap:1rem; border-bottom:2px solid #1a0a3a; padding-bottom:1rem; margin-bottom:1.2rem; }
+      .cot-doc-logo { width:64px; height:64px; border-radius:50%; object-fit:cover; }
+      .cot-doc-brand-name { font-family:'Cinzel Decorative',serif; font-size:1.2rem; font-weight:900; color:#1a0a3a; }
+      .cot-doc-brand-sub { font-family:'Orbitron',monospace; font-size:0.7rem; color:#7c3aed; letter-spacing:2px; }
+      .cot-doc-num { font-family:'Orbitron',monospace; font-size:0.65rem; color:#888; text-align:right; margin-left:auto; }
+      .cot-section-title { font-family:'Orbitron',monospace; font-size:0.65rem; letter-spacing:2px; text-transform:uppercase; color:#7c3aed; margin:1rem 0 0.5rem; }
+      .cot-client-grid { display:grid; grid-template-columns:1fr 1fr; gap:0.4rem; margin-bottom:1rem; }
+      .cot-client-label { font-weight:700; color:#333; }
+      .cot-client-val { color:#555; }
+      table { width:100%; border-collapse:collapse; margin:0.5rem 0; }
+      th { background:#1a0a3a; color:white; font-family:'Orbitron',monospace; font-size:0.6rem; letter-spacing:1px; padding:8px 10px; text-align:left; }
+      td { padding:7px 10px; font-size:0.85rem; border-bottom:1px solid #eee; }
+      tr:nth-child(even) td { background:#f8f4ff; }
+      .total-row td { font-family:'Orbitron',monospace; font-weight:900; font-size:1rem; border-top:2px solid #1a0a3a; color:#7c3aed; border-bottom:none; }
+      .validity { background:#f0ebff; border-radius:6px; padding:6px 12px; font-size:0.78rem; color:#7c3aed; text-align:center; margin-top:0.8rem; }
+      .footer { margin-top:1.2rem; padding-top:0.8rem; border-top:1px solid #ddd; font-size:0.75rem; color:#888; text-align:center; }
+      @media print { body { padding: 15px; } }
+    </style>
+  </head><body>
+    ${printArea.outerHTML.replace('id="cotizacionPrintArea"','').replace('class="cotizacion-doc"','')}
+  </body></html>`);
+  win.document.close();
+  setTimeout(() => { win.focus(); win.print(); }, 600);
+}
+
+function enviarCotizacionWA() {
+  if (cotizacionSeleccionada.length === 0) return;
+  const negocio = getNegocio();
+  const usuario = getUsuarioSesion();
+  const total   = cotizacionSeleccionada.reduce((a,s) => a+s.precio, 0);
+  const lista   = cotizacionSeleccionada.map((s,i) => `${i+1}. ${s.nombre} — $${s.precio} MXN`).join('\n');
+  const clienteTxt = usuario ? `\n👤 Cliente: ${usuario.nombre}\n📱 WhatsApp: ${usuario.whatsapp}` : '';
+  const msg = encodeURIComponent(
+    `💅 *COTIZACIÓN - Star Shine Nails* 💅\n${clienteTxt}\n\n📋 Servicios:\n${lista}\n\n💰 *Total: $${total.toLocaleString()} MXN*\n\n⏳ Válida por 7 días\n\n✨ ¿Deseas agendar tu cita?`
+  );
+  window.open(`https://wa.me/52${negocio.telefono}?text=${msg}`, '_blank');
+}
+
+
+// ============================================================
+// ADMIN — USUARIOS
+// ============================================================
+function renderAdminUsuarios() {
+  const usuarios = getUsuarios();
+  const search   = (document.getElementById('filterUsuarioSearch')?.value || '').toLowerCase();
+  const container = document.getElementById('adminUsuariosList');
+  if (!container) return;
+
+  let entries = Object.values(usuarios);
+  if (search) entries = entries.filter(u =>
+    u.nombre.toLowerCase().includes(search) || u.whatsapp.includes(search)
+  );
+
+  if (entries.length === 0) {
+    container.innerHTML = '<div class="empty-state"><span>👥</span>No hay usuarios registrados</div>';
+    return;
+  }
+
+  container.innerHTML = `
+    <table style="width:100%;border-collapse:collapse">
+      <thead>
+        <tr>
+          <th style="background:rgba(0,212,255,0.1);color:var(--neon-blue);font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:1.5px;padding:10px 12px;text-align:left;border-bottom:1px solid rgba(0,212,255,0.15)">NOMBRE</th>
+          <th style="background:rgba(0,212,255,0.1);color:var(--neon-blue);font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:1.5px;padding:10px 12px;text-align:left;border-bottom:1px solid rgba(0,212,255,0.15)">WHATSAPP</th>
+          <th style="background:rgba(0,212,255,0.1);color:var(--neon-blue);font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:1.5px;padding:10px 12px;text-align:left;border-bottom:1px solid rgba(0,212,255,0.15)">CITAS</th>
+          <th style="background:rgba(0,212,255,0.1);color:var(--neon-blue);font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:1.5px;padding:10px 12px;text-align:left;border-bottom:1px solid rgba(0,212,255,0.15)">REGISTRO</th>
+          <th style="background:rgba(0,212,255,0.1);color:var(--neon-blue);font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:1.5px;padding:10px 12px;text-align:left;border-bottom:1px solid rgba(0,212,255,0.15)">ACCIÓN</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${entries.map(u => {
+          const citas = getCitas().filter(c => c.whatsapp === u.whatsapp).length;
+          const fecha = u.fechaReg ? new Date(u.fechaReg).toLocaleDateString('es-MX') : '—';
+          return `
+            <tr style="border-bottom:1px solid rgba(0,212,255,0.07)">
+              <td style="padding:10px 12px;font-size:0.9rem;color:var(--text-light)">${u.nombre}</td>
+              <td style="padding:10px 12px;font-family:'Orbitron',monospace;font-size:0.75rem;color:var(--neon-blue)">${u.whatsapp}</td>
+              <td style="padding:10px 12px;text-align:center">
+                <span style="font-family:'Orbitron',monospace;font-size:0.8rem;font-weight:700;color:${citas>0?'var(--gold)':'var(--text-muted)'}">${citas}</span>
+              </td>
+              <td style="padding:10px 12px;font-size:0.78rem;color:var(--text-muted)">${fecha}</td>
+              <td style="padding:10px 12px;display:flex;gap:0.4rem;flex-wrap:wrap">
+                <a href="https://wa.me/52${u.whatsapp}" target="_blank" style="font-family:'Orbitron',monospace;font-size:0.55rem;color:#25D366;text-decoration:none;border:1px solid rgba(37,211,102,0.3);padding:4px 8px;border-radius:4px;">💬 WA</a>
+                <button class="btn-sm btn-delete" onclick="deleteUsuario('${u.whatsapp}')">🗑</button>
+              </td>
+            </tr>`;
+        }).join('')}
+      </tbody>
+    </table>
+    <p style="font-family:'Orbitron',monospace;font-size:0.65rem;color:var(--text-muted);margin-top:1rem;text-align:right">Total: ${entries.length} usuario(s)</p>
+  `;
+}
+
+function deleteUsuario(wa) {
+  if (!confirm(`¿Eliminar usuario ${wa}?`)) return;
+  const usuarios = getUsuarios();
+  delete usuarios[wa];
+  saveUsuarios(usuarios);
+  renderAdminUsuarios();
+  notify('Usuario eliminado', 'info');
+}
+
+function clearAllUsuarios() {
+  if (!confirm('¿Eliminar TODOS los usuarios? Esta acción no se puede deshacer.')) return;
+  saveUsuarios({});
+  renderAdminUsuarios();
+  notify('Todos los usuarios han sido eliminados', 'info');
+}
 
 // INIT DATA
 function initData() {
@@ -2136,18 +2712,17 @@ function isHorarioDisponible(fecha, hora) {
 }
 
 function agendarCita() {
-  const nombre = document.getElementById('citaNombre').value.trim();
-  const wa = document.getElementById('citaWA').value.trim();
+  const usuario = getUsuarioSesion();
+  if (!usuario) { notify('Debes iniciar sesión para agendar una cita', 'error'); return; }
+
+  const nombre = usuario.nombre;
+  const wa = usuario.whatsapp;
   const fecha = document.getElementById('citaFecha').value;
   const hora = document.getElementById('citaHora').value;
   const nota = document.getElementById('citaNota').value.trim();
 
-  if (!nombre || !wa || !fecha || !hora) {
-    notify('Por favor llena todos los campos requeridos', 'error');
-    return;
-  }
-  if (!/^\d{10}$/.test(wa.replace(/\s/g, ''))) {
-    notify('Ingresa un número WhatsApp válido de 10 dígitos', 'error');
+  if (!fecha || !hora) {
+    notify('Por favor selecciona fecha y hora', 'error');
     return;
   }
 
@@ -2173,13 +2748,9 @@ function agendarCita() {
   const citas = getCitas();
   const nueva = {
     id: 'cita_' + Date.now(),
-    nombre,
-    whatsapp: wa,
-    fecha,
-    hora,
+    nombre, whatsapp: wa, fecha, hora,
     servicios: serviciosSeleccionados,
-    nota,
-    status: 'pendiente',
+    nota, status: 'pendiente',
     fechaCreacion: new Date().toISOString(),
     total: serviciosSeleccionados.reduce((acc, s) => acc + s.precio, 0)
   };
@@ -2187,17 +2758,14 @@ function agendarCita() {
   citas.push(nueva);
   saveData(STORAGE_KEYS.citas, citas);
 
-  // Clear form
-  document.getElementById('citaNombre').value = '';
-  document.getElementById('citaWA').value = '';
   document.getElementById('citaFecha').value = '';
   document.getElementById('citaHora').value = '';
   document.getElementById('citaNota').value = '';
   document.querySelectorAll('#citaServicesCheck input').forEach(cb => cb.checked = false);
 
-  notify(`¡Cita agendada exitosamente! 🌟 Te contactaremos pronto al ${wa}`, 'success', 5000);
+  notify(`¡Cita agendada exitosamente! 🌟 Te contactaremos pronto, ${nombre}`, 'success', 5000);
+  renderMisCitas();
 
-  // Send via WhatsApp
   const negocio = getNegocio();
   const servsList = serviciosSeleccionados.map(s => s.nombre).join(', ');
   const msg = encodeURIComponent(
@@ -2207,26 +2775,28 @@ function agendarCita() {
 }
 
 // ============================================================
-// BUSCAR MIS CITAS
+// BUSCAR MIS CITAS (por sesión)
 // ============================================================
-function buscarMisCitas() {
-  const wa = document.getElementById('buscarWA').value.trim();
-  if (!wa) { notify('Ingresa tu número de WhatsApp', 'error'); return; }
-
-  const citas = getCitas().filter(c => c.whatsapp === wa);
+function renderMisCitas() {
+  const usuario = getUsuarioSesion();
   const container = document.getElementById('misCitasResult');
+  const block = document.getElementById('misCitasBlock');
+  if (!usuario || !container) return;
+  if (block) block.style.display = 'block';
 
+  const citas = getCitas().filter(c => c.whatsapp === usuario.whatsapp);
   if (citas.length === 0) {
-    container.innerHTML = '<div class="empty-state"><span>🔭</span>No encontramos citas con ese número</div>';
+    container.innerHTML = '<div class="empty-state"><span>📅</span>Aún no tienes citas agendadas</div>';
     return;
   }
-
-  container.innerHTML = citas.map(c => `
+  const sorted = [...citas].sort((a,b) => (b.fecha+b.hora) > (a.fecha+a.hora) ? 1 : -1);
+  container.innerHTML = sorted.map(c => `
     <div class="cita-card">
       <div class="cita-info">
         <p class="cita-name">📅 ${c.fecha} — ${c.hora}</p>
-        <p class="cita-detail">${c.servicios.map(s=>s.nombre).join(', ')}</p>
-        <p class="cita-detail" style="color:var(--gold)">Total: $${c.total} MXN</p>
+        <p class="cita-detail">💫 ${c.servicios.map(s=>s.nombre).join(', ')}</p>
+        <p class="cita-detail" style="color:var(--gold)">💰 $${c.total} MXN</p>
+        ${c.nota ? `<p class="cita-detail" style="color:var(--text-muted);font-size:0.78rem">📝 ${c.nota}</p>` : ''}
       </div>
       <span class="cita-badge badge-${c.status}">${c.status.toUpperCase()}</span>
     </div>
@@ -2364,9 +2934,10 @@ function switchAdminTab(tab) {
   document.getElementById(`tab-${tab}`).classList.add('active');
 
   if (tab === 'portafolio') { renderAdminPortafolio(); populatePortafolioCategorySelect(); }
-  if (tab === 'negocio') loadNegocioForm();
-  if (tab === 'citas') renderAdminCitas();
-  if (tab === 'servicios') renderAdminServicios();
+  if (tab === 'negocio')    loadNegocioForm();
+  if (tab === 'citas')      renderAdminCitas();
+  if (tab === 'servicios')  renderAdminServicios();
+  if (tab === 'usuarios')   renderAdminUsuarios();
 }
 
 // ============================================================
@@ -2700,6 +3271,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderContacto();
   setMinDate();
   loadLogo();
+  actualizarUIUsuario();
 
   // Sticky admin bar init
   const bar = document.getElementById('stickyAdminBar');
