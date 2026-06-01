@@ -43,38 +43,13 @@
   }
 
   /* STARS BACKGROUND */
-  body::before {
-    content: '';
+  /* canvas background replaces static stars */
+  #galaxyCanvas {
     position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    background-image:
-      radial-gradient(1px 1px at 10% 15%, white, transparent),
-      radial-gradient(1px 1px at 20% 40%, white, transparent),
-      radial-gradient(1.5px 1.5px at 35% 10%, rgba(255,255,255,0.9), transparent),
-      radial-gradient(1px 1px at 50% 60%, white, transparent),
-      radial-gradient(1px 1px at 60% 25%, rgba(255,255,255,0.8), transparent),
-      radial-gradient(2px 2px at 70% 80%, rgba(0,212,255,0.6), transparent),
-      radial-gradient(1px 1px at 80% 35%, white, transparent),
-      radial-gradient(1px 1px at 90% 55%, white, transparent),
-      radial-gradient(1.5px 1.5px at 15% 70%, rgba(255,215,0,0.5), transparent),
-      radial-gradient(1px 1px at 45% 85%, white, transparent),
-      radial-gradient(1px 1px at 55% 5%, white, transparent),
-      radial-gradient(1px 1px at 75% 90%, rgba(189,0,255,0.5), transparent),
-      radial-gradient(1.5px 1.5px at 85% 15%, white, transparent),
-      radial-gradient(1px 1px at 25% 55%, white, transparent),
-      radial-gradient(1px 1px at 92% 70%, rgba(255,0,110,0.4), transparent),
-      radial-gradient(1px 1px at 3% 88%, white, transparent),
-      radial-gradient(1px 1px at 67% 47%, rgba(255,255,255,0.7), transparent),
-      radial-gradient(1.5px 1.5px at 42% 30%, rgba(0,212,255,0.4), transparent);
     pointer-events: none;
     z-index: 0;
-    animation: twinkle 8s ease-in-out infinite alternate;
-  }
-
-  @keyframes twinkle {
-    0% { opacity: 0.7; }
-    100% { opacity: 1; }
   }
 
   /* NAVBAR */
@@ -1715,11 +1690,395 @@
     font-family: 'Orbitron', monospace; font-size: 0.7rem;
   }
 
+
+  /* ── COTIZADOR POR CATEGORÍAS ── */
+  .cot-categories-nav {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.8rem;
+    justify-content: center;
+  }
+  .cot-cat-pill {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    background: rgba(0,212,255,0.05);
+    color: var(--text-muted);
+    border: 1px solid rgba(0,212,255,0.15);
+    padding: 7px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .cot-cat-pill:hover {
+    background: rgba(0,212,255,0.1);
+    color: var(--neon-blue);
+    border-color: rgba(0,212,255,0.4);
+  }
+  .cot-cat-pill.active {
+    background: rgba(0,212,255,0.15);
+    color: var(--neon-blue);
+    border-color: var(--neon-blue);
+    box-shadow: 0 0 12px rgba(0,212,255,0.2);
+  }
+  .cot-cat-pill .pill-count {
+    background: rgba(0,212,255,0.25);
+    color: var(--neon-blue);
+    border-radius: 10px;
+    padding: 1px 6px;
+    font-size: 0.55rem;
+    font-weight: 900;
+  }
+  .cot-category-panel {
+    display: none;
+  }
+  .cot-category-panel.active {
+    display: block;
+    animation: fade-up 0.3s ease;
+  }
+  .cot-cat-header {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid rgba(0,212,255,0.1);
+  }
+  .cot-cat-icon {
+    font-size: 1.8rem;
+    filter: drop-shadow(0 0 8px rgba(0,212,255,0.3));
+  }
+  .cot-cat-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--neon-blue);
+    letter-spacing: 1px;
+  }
+  .cot-cat-subtitle {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+  .cot-items-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 0.6rem;
+  }
+  .cot-service-card {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.9rem 1rem;
+    background: rgba(0,212,255,0.03);
+    border: 1.5px solid rgba(0,212,255,0.1);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+    position: relative;
+    overflow: hidden;
+  }
+  .cot-service-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--gradient-neon);
+    transform: scaleY(0);
+    transition: transform 0.2s;
+    border-radius: 3px 0 0 3px;
+  }
+  .cot-service-card:hover {
+    background: rgba(0,212,255,0.08);
+    border-color: rgba(0,212,255,0.3);
+    transform: translateX(3px);
+  }
+  .cot-service-card:hover::before { transform: scaleY(1); }
+  .cot-service-card.selected {
+    background: rgba(0,212,255,0.12);
+    border-color: var(--neon-blue);
+    box-shadow: 0 0 15px rgba(0,212,255,0.15);
+  }
+  .cot-service-card.selected::before { transform: scaleY(1); }
+  .cot-service-card input[type="checkbox"] {
+    accent-color: var(--neon-blue);
+    width: 17px;
+    height: 17px;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+  .cot-service-card-body { flex: 1; min-width: 0; }
+  .cot-service-card-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-light);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .cot-service-card-price {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--gold);
+    margin-top: 2px;
+  }
+  .cot-check-icon {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: rgba(0,212,255,0.1);
+    border: 1.5px solid rgba(0,212,255,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem;
+    flex-shrink: 0;
+    transition: all 0.2s;
+    color: transparent;
+  }
+  .cot-service-card.selected .cot-check-icon {
+    background: var(--neon-blue);
+    border-color: var(--neon-blue);
+    color: white;
+  }
+  /* selected summary chips */
+  .cot-selected-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 1rem;
+    min-height: 28px;
+  }
+  .cot-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(0,212,255,0.1);
+    border: 1px solid rgba(0,212,255,0.3);
+    border-radius: 20px;
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    color: var(--neon-blue);
+    animation: fade-up 0.2s ease;
+  }
+  .cot-chip-remove {
+    cursor: pointer;
+    color: rgba(0,212,255,0.5);
+    font-size: 0.7rem;
+    transition: color 0.2s;
+  }
+  .cot-chip-remove:hover { color: var(--saber-red); }
+
+  /* ── FECHA / HORA PICKER VISUAL ── */
+  .datetime-picker-wrapper {
+    background: rgba(6,13,43,0.8);
+    border: 1px solid rgba(0,212,255,0.15);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin-bottom: 1.2rem;
+  }
+  .datetime-picker-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--neon-blue);
+    margin-bottom: 1.2rem;
+    text-align: center;
+  }
+  /* Calendar mini */
+  .mini-calendar {
+    width: 100%;
+    max-width: 340px;
+    margin: 0 auto 1.5rem;
+  }
+  .cal-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.8rem;
+  }
+  .cal-nav-btn {
+    background: rgba(0,212,255,0.08);
+    border: 1px solid rgba(0,212,255,0.2);
+    color: var(--neon-blue);
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 0.85rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .cal-nav-btn:hover { background: rgba(0,212,255,0.2); }
+  .cal-month-label {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-light);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 3px;
+  }
+  .cal-day-name {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.55rem;
+    color: var(--text-muted);
+    text-align: center;
+    padding: 4px 0;
+    letter-spacing: 1px;
+  }
+  .cal-day {
+    aspect-ratio: 1;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+    color: var(--text-light);
+    position: relative;
+  }
+  .cal-day:hover:not(.disabled):not(.empty) {
+    background: rgba(0,212,255,0.12);
+    border-color: rgba(0,212,255,0.3);
+  }
+  .cal-day.today {
+    border-color: rgba(0,212,255,0.3);
+    color: var(--neon-blue);
+    font-weight: 700;
+  }
+  .cal-day.selected {
+    background: var(--gradient-neon);
+    color: white;
+    font-weight: 700;
+    box-shadow: 0 0 12px rgba(0,212,255,0.35);
+    border-color: transparent;
+  }
+  .cal-day.disabled {
+    color: rgba(255,255,255,0.15);
+    cursor: not-allowed;
+  }
+  .cal-day.has-cita::after {
+    content: '';
+    position: absolute;
+    bottom: 3px;
+    width: 4px; height: 4px;
+    background: var(--gold);
+    border-radius: 50%;
+  }
+  .cal-day.empty { cursor: default; }
+  /* Time slots */
+  .time-slots-label {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    margin-bottom: 0.7rem;
+    text-align: center;
+  }
+  .time-slots-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+    max-width: 340px;
+    margin: 0 auto;
+  }
+  .time-slot {
+    padding: 8px 4px;
+    border-radius: 8px;
+    border: 1px solid rgba(0,212,255,0.15);
+    background: rgba(0,212,255,0.04);
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--text-light);
+    letter-spacing: 0.5px;
+  }
+  .time-slot:hover:not(.occupied):not(.past) {
+    background: rgba(0,212,255,0.12);
+    border-color: rgba(0,212,255,0.4);
+    color: var(--neon-blue);
+  }
+  .time-slot.selected {
+    background: var(--gradient-neon);
+    border-color: transparent;
+    color: white;
+    box-shadow: 0 0 12px rgba(0,212,255,0.3);
+  }
+  .time-slot.occupied {
+    background: rgba(255,23,68,0.06);
+    border-color: rgba(255,23,68,0.15);
+    color: rgba(255,255,255,0.2);
+    cursor: not-allowed;
+    text-decoration: line-through;
+  }
+  .time-slot.past {
+    opacity: 0.25;
+    cursor: not-allowed;
+  }
+  .datetime-display {
+    text-align: center;
+    padding: 0.8rem;
+    background: rgba(0,212,255,0.05);
+    border: 1px solid rgba(0,212,255,0.15);
+    border-radius: 8px;
+    margin-top: 1rem;
+    max-width: 340px;
+    margin: 1rem auto 0;
+  }
+  .datetime-display-val {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 1px;
+  }
+  .datetime-display-sub {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+  /* legend */
+  .slots-legend {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 0.8rem;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+  .legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
 </style>
 </head>
 <body>
 
 <!-- NAVBAR -->
+<canvas id="galaxyCanvas"></canvas>
 <nav>
   <a class="nav-logo" href="#hero">★ STAR SHINE NAILS</a>
   <ul class="nav-links" id="navLinks">
@@ -1799,9 +2158,21 @@
     <p class="section-eyebrow">✦ Calculadora Cósmica ✦</p>
     <h2 class="section-title">Cotiza tu Servicio</h2>
     <div class="section-line"></div>
+    <p style="color:var(--text-muted);font-size:0.9rem;margin-top:0.8rem">Selecciona los servicios que deseas y obtén tu cotización al instante</p>
   </div>
-  <div class="cotizador-wrapper">
-    <div class="cotizador-grid" id="cotizadorGrid"></div>
+  <div class="cotizador-wrapper" style="max-width:900px">
+    <!-- Pills de categorías -->
+    <div class="cot-categories-nav" id="cotCatNav"></div>
+    <!-- Panel por categoría -->
+    <div id="cotCategoryPanels"></div>
+    <!-- Chips de seleccionados -->
+    <div style="margin:1.2rem 0">
+      <p style="font-family:'Orbitron',monospace;font-size:0.6rem;letter-spacing:2px;color:var(--text-muted);margin-bottom:0.5rem">SERVICIOS SELECCIONADOS:</p>
+      <div class="cot-selected-chips" id="cotSelectedChips">
+        <span style="font-size:0.8rem;color:var(--text-muted);font-style:italic">Ningún servicio seleccionado aún...</span>
+      </div>
+    </div>
+    <div class="divider"></div>
     <div class="cotizador-total">
       <p class="total-label">Total Estimado</p>
       <p class="total-amount" id="totalAmount">$0 MXN</p>
@@ -1877,27 +2248,48 @@
   </div>
 
   <!-- CITA FORM (shown when logged in) -->
-  <div class="cita-form-wrapper" id="citaFormBlock" style="display:none">
-    <div class="form-grid">
-      <div class="form-group">
-        <label class="form-label">Fecha</label>
-        <input class="form-input" id="citaFecha" type="date">
+  <div class="cita-form-wrapper" id="citaFormBlock" style="display:none;max-width:780px;margin-left:auto;margin-right:auto">
+    <!-- PASO 1: Fecha & Hora visual -->
+    <div class="datetime-picker-wrapper">
+      <p class="datetime-picker-title">📅 Paso 1 — Elige Fecha y Hora</p>
+      <div class="mini-calendar" id="miniCalendar">
+        <div class="cal-nav">
+          <button class="cal-nav-btn" onclick="calPrevMonth()">‹</button>
+          <span class="cal-month-label" id="calMonthLabel"></span>
+          <button class="cal-nav-btn" onclick="calNextMonth()">›</button>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
       </div>
-      <div class="form-group">
-        <label class="form-label">Hora</label>
-        <input class="form-input" id="citaHora" type="time">
+      <p class="time-slots-label" id="timeSlotsLabel">— Selecciona una fecha primero —</p>
+      <div class="time-slots-grid" id="timeSlotsGrid"></div>
+      <div class="slots-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--gradient-neon)"></div> Disponible</div>
+        <div class="legend-item"><div class="legend-dot" style="background:rgba(255,23,68,0.4)"></div> Ocupado</div>
+        <div class="legend-item"><div class="legend-dot" style="background:rgba(255,255,255,0.1)"></div> Pasado</div>
       </div>
-      <div class="form-group full">
-        <label class="form-label">Servicios que necesitas</label>
-        <div class="services-check-grid" id="citaServicesCheck"></div>
-      </div>
-      <div class="form-group full">
-        <label class="form-label">Notas adicionales</label>
-        <textarea class="form-textarea" id="citaNota" placeholder="Algún detalle especial, color preferido, etc."></textarea>
+      <div class="datetime-display" id="datetimeDisplay">
+        <p class="datetime-display-val" id="datetimeDisplayVal">Sin seleccionar</p>
+        <p class="datetime-display-sub">Selecciona fecha y hora en el calendario</p>
       </div>
     </div>
+    <!-- hidden inputs for compatibility -->
+    <input type="hidden" id="citaFecha">
+    <input type="hidden" id="citaHora">
+
+    <!-- PASO 2: Servicios por categoría -->
+    <div style="margin-bottom:1.2rem">
+      <p style="font-family:'Orbitron',monospace;font-size:0.65rem;letter-spacing:3px;text-transform:uppercase;color:var(--neon-blue);margin-bottom:1rem;text-align:center">💅 Paso 2 — Elige tus Servicios</p>
+      <div id="citaServicesCheck"></div>
+    </div>
+
+    <!-- PASO 3: Notas -->
+    <div class="form-group" style="margin-bottom:1.5rem">
+      <label class="form-label">📝 Paso 3 — Notas adicionales (opcional)</label>
+      <textarea class="form-textarea" id="citaNota" placeholder="Color preferido, diseño especial, alergias, etc."></textarea>
+    </div>
+
     <div style="text-align:center">
-      <button class="btn-primary" onclick="agendarCita()">⚡ Confirmar Cita</button>
+      <button class="btn-primary" style="padding:16px 40px;font-size:0.8rem" onclick="agendarCita()">⚡ Confirmar Cita</button>
     </div>
   </div>
 
@@ -2464,7 +2856,390 @@ function imprimirCotizacion() {
       .validity { background:#f0ebff; border-radius:6px; padding:6px 12px; font-size:0.78rem; color:#7c3aed; text-align:center; margin-top:0.8rem; }
       .footer { margin-top:1.2rem; padding-top:0.8rem; border-top:1px solid #ddd; font-size:0.75rem; color:#888; text-align:center; }
       @media print { body { padding: 15px; } }
-    </style>
+    
+  /* ── COTIZADOR POR CATEGORÍAS ── */
+  .cot-categories-nav {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.8rem;
+    justify-content: center;
+  }
+  .cot-cat-pill {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.6rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    background: rgba(0,212,255,0.05);
+    color: var(--text-muted);
+    border: 1px solid rgba(0,212,255,0.15);
+    padding: 7px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.25s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .cot-cat-pill:hover {
+    background: rgba(0,212,255,0.1);
+    color: var(--neon-blue);
+    border-color: rgba(0,212,255,0.4);
+  }
+  .cot-cat-pill.active {
+    background: rgba(0,212,255,0.15);
+    color: var(--neon-blue);
+    border-color: var(--neon-blue);
+    box-shadow: 0 0 12px rgba(0,212,255,0.2);
+  }
+  .cot-cat-pill .pill-count {
+    background: rgba(0,212,255,0.25);
+    color: var(--neon-blue);
+    border-radius: 10px;
+    padding: 1px 6px;
+    font-size: 0.55rem;
+    font-weight: 900;
+  }
+  .cot-category-panel {
+    display: none;
+  }
+  .cot-category-panel.active {
+    display: block;
+    animation: fade-up 0.3s ease;
+  }
+  .cot-cat-header {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid rgba(0,212,255,0.1);
+  }
+  .cot-cat-icon {
+    font-size: 1.8rem;
+    filter: drop-shadow(0 0 8px rgba(0,212,255,0.3));
+  }
+  .cot-cat-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--neon-blue);
+    letter-spacing: 1px;
+  }
+  .cot-cat-subtitle {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+  .cot-items-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 0.6rem;
+  }
+  .cot-service-card {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 0.9rem 1rem;
+    background: rgba(0,212,255,0.03);
+    border: 1.5px solid rgba(0,212,255,0.1);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+    position: relative;
+    overflow: hidden;
+  }
+  .cot-service-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--gradient-neon);
+    transform: scaleY(0);
+    transition: transform 0.2s;
+    border-radius: 3px 0 0 3px;
+  }
+  .cot-service-card:hover {
+    background: rgba(0,212,255,0.08);
+    border-color: rgba(0,212,255,0.3);
+    transform: translateX(3px);
+  }
+  .cot-service-card:hover::before { transform: scaleY(1); }
+  .cot-service-card.selected {
+    background: rgba(0,212,255,0.12);
+    border-color: var(--neon-blue);
+    box-shadow: 0 0 15px rgba(0,212,255,0.15);
+  }
+  .cot-service-card.selected::before { transform: scaleY(1); }
+  .cot-service-card input[type="checkbox"] {
+    accent-color: var(--neon-blue);
+    width: 17px;
+    height: 17px;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+  .cot-service-card-body { flex: 1; min-width: 0; }
+  .cot-service-card-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-light);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .cot-service-card-price {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--gold);
+    margin-top: 2px;
+  }
+  .cot-check-icon {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: rgba(0,212,255,0.1);
+    border: 1.5px solid rgba(0,212,255,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem;
+    flex-shrink: 0;
+    transition: all 0.2s;
+    color: transparent;
+  }
+  .cot-service-card.selected .cot-check-icon {
+    background: var(--neon-blue);
+    border-color: var(--neon-blue);
+    color: white;
+  }
+  /* selected summary chips */
+  .cot-selected-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 1rem;
+    min-height: 28px;
+  }
+  .cot-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(0,212,255,0.1);
+    border: 1px solid rgba(0,212,255,0.3);
+    border-radius: 20px;
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    color: var(--neon-blue);
+    animation: fade-up 0.2s ease;
+  }
+  .cot-chip-remove {
+    cursor: pointer;
+    color: rgba(0,212,255,0.5);
+    font-size: 0.7rem;
+    transition: color 0.2s;
+  }
+  .cot-chip-remove:hover { color: var(--saber-red); }
+
+  /* ── FECHA / HORA PICKER VISUAL ── */
+  .datetime-picker-wrapper {
+    background: rgba(6,13,43,0.8);
+    border: 1px solid rgba(0,212,255,0.15);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin-bottom: 1.2rem;
+  }
+  .datetime-picker-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--neon-blue);
+    margin-bottom: 1.2rem;
+    text-align: center;
+  }
+  /* Calendar mini */
+  .mini-calendar {
+    width: 100%;
+    max-width: 340px;
+    margin: 0 auto 1.5rem;
+  }
+  .cal-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.8rem;
+  }
+  .cal-nav-btn {
+    background: rgba(0,212,255,0.08);
+    border: 1px solid rgba(0,212,255,0.2);
+    color: var(--neon-blue);
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 0.85rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .cal-nav-btn:hover { background: rgba(0,212,255,0.2); }
+  .cal-month-label {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-light);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 3px;
+  }
+  .cal-day-name {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.55rem;
+    color: var(--text-muted);
+    text-align: center;
+    padding: 4px 0;
+    letter-spacing: 1px;
+  }
+  .cal-day {
+    aspect-ratio: 1;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+    color: var(--text-light);
+    position: relative;
+  }
+  .cal-day:hover:not(.disabled):not(.empty) {
+    background: rgba(0,212,255,0.12);
+    border-color: rgba(0,212,255,0.3);
+  }
+  .cal-day.today {
+    border-color: rgba(0,212,255,0.3);
+    color: var(--neon-blue);
+    font-weight: 700;
+  }
+  .cal-day.selected {
+    background: var(--gradient-neon);
+    color: white;
+    font-weight: 700;
+    box-shadow: 0 0 12px rgba(0,212,255,0.35);
+    border-color: transparent;
+  }
+  .cal-day.disabled {
+    color: rgba(255,255,255,0.15);
+    cursor: not-allowed;
+  }
+  .cal-day.has-cita::after {
+    content: '';
+    position: absolute;
+    bottom: 3px;
+    width: 4px; height: 4px;
+    background: var(--gold);
+    border-radius: 50%;
+  }
+  .cal-day.empty { cursor: default; }
+  /* Time slots */
+  .time-slots-label {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    margin-bottom: 0.7rem;
+    text-align: center;
+  }
+  .time-slots-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+    max-width: 340px;
+    margin: 0 auto;
+  }
+  .time-slot {
+    padding: 8px 4px;
+    border-radius: 8px;
+    border: 1px solid rgba(0,212,255,0.15);
+    background: rgba(0,212,255,0.04);
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Orbitron', monospace;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--text-light);
+    letter-spacing: 0.5px;
+  }
+  .time-slot:hover:not(.occupied):not(.past) {
+    background: rgba(0,212,255,0.12);
+    border-color: rgba(0,212,255,0.4);
+    color: var(--neon-blue);
+  }
+  .time-slot.selected {
+    background: var(--gradient-neon);
+    border-color: transparent;
+    color: white;
+    box-shadow: 0 0 12px rgba(0,212,255,0.3);
+  }
+  .time-slot.occupied {
+    background: rgba(255,23,68,0.06);
+    border-color: rgba(255,23,68,0.15);
+    color: rgba(255,255,255,0.2);
+    cursor: not-allowed;
+    text-decoration: line-through;
+  }
+  .time-slot.past {
+    opacity: 0.25;
+    cursor: not-allowed;
+  }
+  .datetime-display {
+    text-align: center;
+    padding: 0.8rem;
+    background: rgba(0,212,255,0.05);
+    border: 1px solid rgba(0,212,255,0.15);
+    border-radius: 8px;
+    margin-top: 1rem;
+    max-width: 340px;
+    margin: 1rem auto 0;
+  }
+  .datetime-display-val {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 1px;
+  }
+  .datetime-display-sub {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+  /* legend */
+  .slots-legend {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 0.8rem;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+  .legend-dot {
+    width: 10px; height: 10px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+</style>
   </head><body>
     ${printArea.outerHTML.replace('id="cotizacionPrintArea"','').replace('class="cotizacion-doc"','')}
   </body></html>`);
@@ -2614,39 +3389,108 @@ let cotizacionSeleccionada = [];
 
 function renderCotizador() {
   const servicios = getServicios();
-  const grid = document.getElementById('cotizadorGrid');
-  let allItems = [];
-  servicios.forEach(s => s.items.forEach(item => allItems.push({ ...item, categoria: s.nombre })));
+  const nav    = document.getElementById('cotCatNav');
+  const panels = document.getElementById('cotCategoryPanels');
+  if (!nav || !panels) return;
 
-  grid.innerHTML = allItems.map(item => `
-    <label class="cotizador-item" id="cot-${item.id}">
-      <input type="checkbox" value="${item.id}" onchange="updateCotizacion()">
-      <span class="cotizador-item-name">${item.nombre}</span>
-      <span class="cotizador-item-price">$${item.precio}</span>
-    </label>
+  nav.innerHTML = servicios.map((s, i) => `
+    <button class="cot-cat-pill ${i===0?'active':''}" id="cotPill_${s.id}" onclick="switchCotCat('${s.id}')">
+      <span>${s.icon}</span>
+      <span>${s.nombre}</span>
+      <span class="pill-count" id="pillCount_${s.id}">0</span>
+    </button>
+  `).join('');
+
+  panels.innerHTML = servicios.map((s, i) => `
+    <div class="cot-category-panel ${i===0?'active':''}" id="cotPanel_${s.id}">
+      <div class="cot-cat-header">
+        <span class="cot-cat-icon">${s.icon}</span>
+        <div>
+          <p class="cot-cat-title">${s.nombre}</p>
+          <p class="cot-cat-subtitle">${s.items.length} servicio(s) disponible(s)</p>
+        </div>
+      </div>
+      <div class="cot-items-list">
+        ${s.items.map(item => `
+          <label class="cot-service-card" id="cot-${item.id}" onclick="toggleCotItem('${item.id}','${s.id}',event)">
+            <input type="checkbox" value="${item.id}" style="display:none">
+            <div class="cot-service-card-body">
+              <p class="cot-service-card-name">${item.nombre}</p>
+              <p class="cot-service-card-price">$${item.precio.toLocaleString()} MXN</p>
+            </div>
+            <div class="cot-check-icon" id="checkIcon_${item.id}">✓</div>
+          </label>
+        `).join('')}
+      </div>
+    </div>
   `).join('');
 }
 
+function switchCotCat(catId) {
+  document.querySelectorAll('.cot-cat-pill').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.cot-category-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('cotPill_'+catId)?.classList.add('active');
+  document.getElementById('cotPanel_'+catId)?.classList.add('active');
+}
+
+function toggleCotItem(itemId, catId, e) {
+  if (e.target.tagName === 'INPUT') return;
+  const card = document.getElementById('cot-'+itemId);
+  const cb   = card?.querySelector('input');
+  if (!card || !cb) return;
+  cb.checked = !cb.checked;
+  updateCotizacion();
+}
+
 function updateCotizacion() {
-  const checks = document.querySelectorAll('#cotizadorGrid input[type="checkbox"]:checked');
   const servicios = getServicios();
   let allItems = [];
-  servicios.forEach(s => s.items.forEach(item => allItems.push(item)));
+  servicios.forEach(s => s.items.forEach(item => allItems.push({ ...item, catId: s.id })));
 
+  // Gather checked
   cotizacionSeleccionada = [];
   let total = 0;
-  checks.forEach(ch => {
-    const item = allItems.find(i => i.id === ch.value);
-    if (item) { total += item.precio; cotizacionSeleccionada.push(item); }
+  allItems.forEach(item => {
+    const card = document.getElementById('cot-'+item.id);
+    const cb   = card?.querySelector('input');
+    const isChecked = cb?.checked || false;
+    card?.classList.toggle('selected', isChecked);
+    if (isChecked) { total += item.precio; cotizacionSeleccionada.push(item); }
   });
 
-  // Update selected style
-  document.querySelectorAll('.cotizador-item').forEach(el => {
-    const cb = el.querySelector('input');
-    el.classList.toggle('selected', cb.checked);
+  // Update pill counts
+  servicios.forEach(s => {
+    const cnt = cotizacionSeleccionada.filter(i => i.catId === s.id).length;
+    const pill = document.getElementById('pillCount_'+s.id);
+    if (pill) {
+      pill.textContent = cnt;
+      pill.style.background = cnt > 0 ? 'rgba(0,212,255,0.4)' : 'rgba(0,212,255,0.15)';
+    }
   });
+
+  // Update chips
+  const chipsEl = document.getElementById('cotSelectedChips');
+  if (chipsEl) {
+    if (cotizacionSeleccionada.length === 0) {
+      chipsEl.innerHTML = '<span style="font-size:0.8rem;color:var(--text-muted);font-style:italic">Ningún servicio seleccionado aún...</span>';
+    } else {
+      chipsEl.innerHTML = cotizacionSeleccionada.map(s => `
+        <span class="cot-chip">
+          ${s.nombre}
+          <span class="cot-chip-remove" onclick="removeCotItem('${s.id}')">✕</span>
+        </span>
+      `).join('');
+    }
+  }
 
   document.getElementById('totalAmount').textContent = `$${total.toLocaleString()} MXN`;
+}
+
+function removeCotItem(itemId) {
+  const card = document.getElementById('cot-'+itemId);
+  const cb = card?.querySelector('input');
+  if (cb) cb.checked = false;
+  updateCotizacion();
 }
 
 function irACitaConCotizacion() {
@@ -2663,20 +3507,29 @@ function irACitaConCotizacion() {
 }
 
 // ============================================================
-// CITAS CHECK LIST (form)
+// CITAS CHECK LIST (form) — categorized
 // ============================================================
 function renderCitaServicesCheck() {
   const servicios = getServicios();
   const container = document.getElementById('citaServicesCheck');
-  let allItems = [];
-  servicios.forEach(s => s.items.forEach(item => allItems.push({ ...item, cat: s.nombre })));
+  if (!container) return;
 
-  container.innerHTML = allItems.map(item => `
-    <label class="check-item">
-      <input type="checkbox" value="${item.id}">
-      <span>${item.nombre}</span>
-      <span style="color:var(--gold);font-size:0.75rem;font-family:'Orbitron',monospace;margin-left:auto">$${item.precio}</span>
-    </label>
+  container.innerHTML = servicios.map(s => `
+    <div style="margin-bottom:1.2rem">
+      <div style="display:flex;align-items:center;gap:0.6rem;margin-bottom:0.6rem;padding-bottom:0.5rem;border-bottom:1px solid rgba(0,212,255,0.08)">
+        <span style="font-size:1.3rem">${s.icon}</span>
+        <span style="font-family:'Orbitron',monospace;font-size:0.7rem;font-weight:700;color:var(--neon-blue);letter-spacing:1px">${s.nombre}</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0.5rem">
+        ${s.items.map(item => `
+          <label class="check-item" style="border-radius:8px">
+            <input type="checkbox" value="${item.id}">
+            <span style="flex:1">${item.nombre}</span>
+            <span style="color:var(--gold);font-size:0.72rem;font-family:'Orbitron',monospace;font-weight:700;flex-shrink:0;margin-left:0.5rem">$${item.precio}</span>
+          </label>
+        `).join('')}
+      </div>
+    </div>
   `).join('');
 }
 
@@ -3243,10 +4096,146 @@ window.addEventListener('scroll', () => {
 // ============================================================
 // SET MIN DATE
 // ============================================================
+// ── MINI CALENDAR STATE ──
+let calYear  = new Date().getFullYear();
+let calMonth = new Date().getMonth();
+let calSelectedDate = null;
+let calSelectedTime = null;
+
+const DIAS   = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+const MESES  = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+const TIME_SLOTS = ['09:00','09:30','10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30'];
+
 function setMinDate() {
-  const today = new Date().toISOString().split('T')[0];
-  document.getElementById('citaFecha').min = today;
-  document.getElementById('citaFecha').value = today;
+  // replaced by mini calendar — no-op
+}
+
+function initCalendar() {
+  const now = new Date();
+  calYear  = now.getFullYear();
+  calMonth = now.getMonth();
+  renderCalendar();
+}
+
+function renderCalendar() {
+  const label = document.getElementById('calMonthLabel');
+  const grid  = document.getElementById('calGrid');
+  if (!label || !grid) return;
+
+  label.textContent = `${MESES[calMonth]} ${calYear}`;
+  const today     = new Date();
+  const firstDay  = new Date(calYear, calMonth, 1).getDay();
+  const daysInMth = new Date(calYear, calMonth+1, 0).getDate();
+  const citas     = getCitas().filter(c => c.status !== 'cancelada');
+
+  // Day name headers
+  let html = DIAS.map(d => `<div class="cal-day-name">${d}</div>`).join('');
+
+  // Empty cells
+  for (let i = 0; i < firstDay; i++) html += `<div class="cal-day empty"></div>`;
+
+  for (let d = 1; d <= daysInMth; d++) {
+    const dateStr = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const dateObj = new Date(calYear, calMonth, d);
+    const isPast  = dateObj < new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const isToday = dateObj.toDateString() === today.toDateString();
+    const isSel   = dateStr === calSelectedDate;
+    const hasCita = citas.some(c => c.fecha === dateStr);
+
+    let cls = 'cal-day';
+    if (isPast)  cls += ' disabled';
+    if (isToday) cls += ' today';
+    if (isSel)   cls += ' selected';
+    if (hasCita && !isPast) cls += ' has-cita';
+
+    const click = isPast ? '' : `onclick="selectCalDate('${dateStr}')"`;
+    html += `<div class="${cls}" ${click}>${d}</div>`;
+  }
+  grid.innerHTML = html;
+}
+
+function calPrevMonth() {
+  calMonth--;
+  if (calMonth < 0) { calMonth = 11; calYear--; }
+  renderCalendar();
+}
+function calNextMonth() {
+  calMonth++;
+  if (calMonth > 11) { calMonth = 0; calYear++; }
+  renderCalendar();
+}
+
+function selectCalDate(dateStr) {
+  calSelectedDate = dateStr;
+  document.getElementById('citaFecha').value = dateStr;
+  renderCalendar();
+  renderTimeSlots(dateStr);
+  updateDatetimeDisplay();
+}
+
+function renderTimeSlots(dateStr) {
+  const grid  = document.getElementById('timeSlotsGrid');
+  const label = document.getElementById('timeSlotsLabel');
+  if (!grid) return;
+
+  const [y,m,d] = dateStr.split('-').map(Number);
+  const dateObj = new Date(y, m-1, d);
+  const dayName = DIAS[dateObj.getDay()];
+  const isToday = dateObj.toDateString() === new Date().toDateString();
+  label.textContent = `⏰ Horarios disponibles — ${dayName} ${d} de ${MESES[m-1]}`;
+
+  const negocio   = getNegocio();
+  const [hA,mA]   = (negocio.horaAbre  || '09:00').split(':').map(Number);
+  const [hC,mC]   = (negocio.horaCierra|| '19:00').split(':').map(Number);
+  const abreMin   = hA*60+mA;
+  const cierraMin = hC*60+mC;
+  const citas     = getCitas().filter(c => c.fecha === dateStr && c.status !== 'cancelada');
+  const now       = new Date();
+
+  grid.innerHTML = TIME_SLOTS.map(t => {
+    const [th, tm] = t.split(':').map(Number);
+    const tMin = th*60+tm;
+    if (tMin < abreMin || tMin >= cierraMin) return '';
+
+    const isOcc  = citas.some(c => c.hora === t);
+    const isPast = isToday && (th < now.getHours() || (th === now.getHours() && tm <= now.getMinutes()));
+    const isSel  = t === calSelectedTime;
+
+    let cls = 'time-slot';
+    if (isOcc)  cls += ' occupied';
+    else if (isPast) cls += ' past';
+    else if (isSel)  cls += ' selected';
+
+    const click = (isOcc || isPast) ? '' : `onclick="selectTimeSlot('${t}')"`;
+    return `<div class="${cls}" ${click}>${t}</div>`;
+  }).join('');
+}
+
+function selectTimeSlot(t) {
+  calSelectedTime = t;
+  document.getElementById('citaHora').value = t;
+  if (calSelectedDate) renderTimeSlots(calSelectedDate);
+  updateDatetimeDisplay();
+}
+
+function updateDatetimeDisplay() {
+  const el  = document.getElementById('datetimeDisplayVal');
+  const sub = document.querySelector('#datetimeDisplay .datetime-display-sub');
+  if (!el) return;
+  if (calSelectedDate && calSelectedTime) {
+    const [y,m,d] = calSelectedDate.split('-').map(Number);
+    const dayName = DIAS[new Date(y,m-1,d).getDay()];
+    el.textContent = `${dayName} ${d} de ${MESES[m-1]} ${y}  ·  ${calSelectedTime} hrs`;
+    if (sub) sub.textContent = '✓ Fecha y hora seleccionadas';
+  } else if (calSelectedDate) {
+    const [y,m,d] = calSelectedDate.split('-').map(Number);
+    const dayName = DIAS[new Date(y,m-1,d).getDay()];
+    el.textContent = `${dayName} ${d} de ${MESES[m-1]} ${y}`;
+    if (sub) sub.textContent = 'Ahora selecciona un horario';
+  } else {
+    el.textContent = 'Sin seleccionar';
+    if (sub) sub.textContent = 'Selecciona fecha y hora en el calendario';
+  }
 }
 
 // ============================================================
@@ -3269,7 +4258,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderPortafolioTabs();
   renderPortfolioGrid();
   renderContacto();
-  setMinDate();
+  initCalendar();
   loadLogo();
   actualizarUIUsuario();
 
@@ -3278,6 +4267,307 @@ document.addEventListener('DOMContentLoaded', () => {
   if (isLoggedIn()) bar.style.display = 'block';
   else bar.style.display = 'none';
 });
+
+
+// ============================================================
+// GALAXY CANVAS — Star Wars x Beauty animated background
+// ============================================================
+(function() {
+  const canvas = document.getElementById('galaxyCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  // ── Palette: Star Wars neons + gold/pink beauty tones ──
+  const COLORS = [
+    'rgba(255,255,255,',      // pure white stars
+    'rgba(0,212,255,',        // neon blue (lightsaber)
+    'rgba(189,0,255,',        // neon purple (force)
+    'rgba(255,215,0,',        // gold (imperial/beauty)
+    'rgba(255,0,110,',        // neon pink (beauty)
+    'rgba(57,255,20,',        // saber green
+    'rgba(255,165,0,',        // amber/warm
+  ];
+
+  let W, H, stars, shootingStars, nebulae, hyperLines, dustParts;
+  let raf;
+  let tick = 0;
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+    init();
+  }
+
+  // ── STARS ──
+  function mkStar() {
+    const col = COLORS[Math.floor(Math.random() * COLORS.length)];
+    return {
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: Math.random() * 1.4 + 0.2,
+      base: Math.random() * 0.7 + 0.3,        // base opacity
+      speed: Math.random() * 0.012 + 0.003,   // twinkle speed
+      phase: Math.random() * Math.PI * 2,
+      color: col,
+      pulse: Math.random() < 0.08,            // 8% are pulsing "beauty sparkles"
+      pulseR: Math.random() * 2.5 + 1.5,
+      pulsePhase: Math.random() * Math.PI * 2,
+      sparkle: Math.random() < 0.04,          // 4% are 4-point sparkles
+    };
+  }
+
+  // ── SHOOTING STARS ──
+  function mkShooter() {
+    const fromLeft = Math.random() < 0.5;
+    return {
+      x: fromLeft ? -40 : W + 40,
+      y: Math.random() * H * 0.6,
+      vx: (fromLeft ? 1 : -1) * (Math.random() * 8 + 5),
+      vy: Math.random() * 3 + 1,
+      len: Math.random() * 120 + 60,
+      life: 1,
+      decay: Math.random() * 0.012 + 0.008,
+      color: COLORS[Math.floor(Math.random() * 3)], // white/blue/purple
+      w: Math.random() * 1.5 + 0.5,
+    };
+  }
+
+  // ── NEBULA CLOUDS ──
+  function mkNebula() {
+    const idx = Math.floor(Math.random() * COLORS.length);
+    return {
+      x: Math.random() * W,
+      y: Math.random() * H,
+      rx: Math.random() * 220 + 80,
+      ry: Math.random() * 140 + 50,
+      alpha: Math.random() * 0.04 + 0.01,
+      color: COLORS[idx],
+      drift: (Math.random() - 0.5) * 0.08,
+      angle: Math.random() * Math.PI * 2,
+    };
+  }
+
+  // ── HYPERSPACE LINES (occasional subtle streaks) ──
+  function mkHyperLine() {
+    return {
+      x: Math.random() * W,
+      y: Math.random() * H,
+      len: Math.random() * 60 + 20,
+      angle: Math.random() * Math.PI * 2,
+      alpha: 0,
+      life: 1,
+      decay: Math.random() * 0.008 + 0.004,
+      color: COLORS[Math.floor(Math.random() * 3)],
+      w: Math.random() * 0.8 + 0.2,
+      fadeIn: true,
+    };
+  }
+
+  // ── BEAUTY DUST PARTICLES ──
+  function mkDust() {
+    return {
+      x: Math.random() * W,
+      y: Math.random() * H,
+      r: Math.random() * 1.5 + 0.5,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3 - 0.1,
+      alpha: Math.random() * 0.5 + 0.1,
+      life: 1,
+      decay: Math.random() * 0.002 + 0.0005,
+      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+    };
+  }
+
+  function init() {
+    const starCount  = Math.min(Math.floor((W * H) / 4800), 300);
+    const nebulaCount = 6;
+    stars        = Array.from({length: starCount}, mkStar);
+    shootingStars = [];
+    nebulae      = Array.from({length: nebulaCount}, mkNebula);
+    hyperLines   = [];
+    dustParts    = Array.from({length: 40}, mkDust);
+  }
+
+  // ── DRAW HELPERS ──
+  function draw4PointSparkle(x, y, r, color, alpha) {
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.strokeStyle = color + '1)';
+    ctx.lineWidth   = 0.7;
+    ctx.shadowColor = color + '0.8)';
+    ctx.shadowBlur  = 4;
+    // 4 arms
+    for (let a = 0; a < 4; a++) {
+      const angle = (a * Math.PI) / 2;
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(x + Math.cos(angle) * r * 2.5, y + Math.sin(angle) * r * 2.5);
+      ctx.stroke();
+    }
+    // center dot
+    ctx.beginPath();
+    ctx.arc(x, y, r * 0.5, 0, Math.PI * 2);
+    ctx.fillStyle = color + '1)';
+    ctx.fill();
+    ctx.restore();
+  }
+
+  // ── MAIN DRAW ──
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    tick++;
+
+    // -- Nebulae (slow drift) --
+    for (const n of nebulae) {
+      n.angle += n.drift * 0.01;
+      n.x += Math.cos(n.angle) * 0.05;
+      n.y += Math.sin(n.angle) * 0.05;
+      if (n.x < -n.rx) n.x = W + n.rx;
+      if (n.x > W + n.rx) n.x = -n.rx;
+      if (n.y < -n.ry) n.y = H + n.ry;
+      if (n.y > H + n.ry) n.y = -n.ry;
+
+      const grad = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.rx);
+      grad.addColorStop(0, n.color + (n.alpha * 1.5).toFixed(3) + ')');
+      grad.addColorStop(0.5, n.color + n.alpha.toFixed(3) + ')');
+      grad.addColorStop(1, n.color + '0)');
+      ctx.save();
+      ctx.scale(1, n.ry / n.rx);
+      ctx.beginPath();
+      ctx.arc(n.x, n.y * (n.rx / n.ry), n.rx, 0, Math.PI * 2);
+      ctx.fillStyle = grad;
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // -- Stars --
+    for (const s of stars) {
+      s.phase += s.speed;
+      const tw    = (Math.sin(s.phase) * 0.5 + 0.5); // 0-1
+      const alpha = s.base * (0.4 + tw * 0.6);
+
+      if (s.sparkle) {
+        // 4-point beauty sparkle
+        const pp = (Math.sin(s.pulsePhase + tick * 0.018) * 0.5 + 0.5);
+        s.pulsePhase += 0.02;
+        draw4PointSparkle(s.x, s.y, s.pulseR * (0.6 + pp * 0.8), s.color, alpha);
+      } else if (s.pulse) {
+        // glowing orb
+        const pr = s.pulseR * (0.7 + tw * 0.5);
+        const grd = ctx.createRadialGradient(s.x, s.y, 0, s.x, s.y, pr);
+        grd.addColorStop(0, s.color + alpha.toFixed(3) + ')');
+        grd.addColorStop(1, s.color + '0)');
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, pr, 0, Math.PI * 2);
+        ctx.fillStyle = grd;
+        ctx.fill();
+      } else {
+        // regular star
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle   = s.color + '1)';
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r * (0.8 + tw * 0.4), 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+    }
+
+    // -- Hyperspace lines --
+    for (let i = hyperLines.length - 1; i >= 0; i--) {
+      const hl = hyperLines[i];
+      if (hl.fadeIn) {
+        hl.alpha += 0.04;
+        if (hl.alpha >= 0.6) hl.fadeIn = false;
+      } else {
+        hl.life -= hl.decay;
+        hl.alpha = hl.life * 0.6;
+      }
+      if (hl.life <= 0) { hyperLines.splice(i, 1); continue; }
+
+      ctx.save();
+      ctx.globalAlpha = hl.alpha;
+      ctx.strokeStyle = hl.color + '1)';
+      ctx.lineWidth   = hl.w;
+      ctx.shadowColor = hl.color + '0.8)';
+      ctx.shadowBlur  = 6;
+      ctx.lineCap     = 'round';
+      ctx.beginPath();
+      ctx.moveTo(hl.x, hl.y);
+      ctx.lineTo(
+        hl.x + Math.cos(hl.angle) * hl.len,
+        hl.y + Math.sin(hl.angle) * hl.len
+      );
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    // -- Shooting stars --
+    for (let i = shootingStars.length - 1; i >= 0; i--) {
+      const ss = shootingStars[i];
+      ss.x += ss.vx;
+      ss.y += ss.vy;
+      ss.life -= ss.decay;
+      if (ss.life <= 0 || ss.x < -200 || ss.x > W + 200) {
+        shootingStars.splice(i, 1); continue;
+      }
+      const tail = { x: ss.x - ss.vx * (ss.len / Math.abs(ss.vx)), y: ss.y - ss.vy * (ss.len / Math.abs(ss.vx)) };
+      const grad = ctx.createLinearGradient(ss.x, ss.y, tail.x, tail.y);
+      grad.addColorStop(0, ss.color + (ss.life * 0.9).toFixed(3) + ')');
+      grad.addColorStop(1, ss.color + '0)');
+      ctx.save();
+      ctx.globalAlpha = ss.life;
+      ctx.strokeStyle = grad;
+      ctx.lineWidth   = ss.w;
+      ctx.shadowColor = ss.color + '0.8)';
+      ctx.shadowBlur  = 8;
+      ctx.lineCap     = 'round';
+      ctx.beginPath();
+      ctx.moveTo(ss.x, ss.y);
+      ctx.lineTo(tail.x, tail.y);
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    // -- Dust particles --
+    for (let i = dustParts.length - 1; i >= 0; i--) {
+      const dp = dustParts[i];
+      dp.x += dp.vx;
+      dp.y += dp.vy;
+      dp.life -= dp.decay;
+      if (dp.life <= 0) { dustParts[i] = mkDust(); continue; }
+      ctx.globalAlpha = dp.alpha * dp.life;
+      ctx.fillStyle   = dp.color + '1)';
+      ctx.beginPath();
+      ctx.arc(dp.x, dp.y, dp.r * dp.life, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.globalAlpha = 1;
+    }
+
+    // -- Spawn logic --
+    // Shooting star: random ~every 4s
+    if (tick % 240 === 0 && shootingStars.length < 3) {
+      shootingStars.push(mkShooter());
+    }
+    // Extra shooting star burst: rare ~every 12s
+    if (tick % 720 === 360 && Math.random() < 0.4) {
+      shootingStars.push(mkShooter());
+      setTimeout(() => shootingStars.push(mkShooter()), 300);
+    }
+    // Hyperspace lines: every ~3s
+    if (tick % 180 === 0 && hyperLines.length < 8) {
+      hyperLines.push(mkHyperLine());
+    }
+    // Keep dust count
+    while (dustParts.length < 40) dustParts.push(mkDust());
+
+    raf = requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', () => { cancelAnimationFrame(raf); resize(); draw(); });
+  resize();
+  draw();
+})();
+
 </script>
 </body>
 </html>
